@@ -1,0 +1,11 @@
+await this.page.getByRole('button', { name: 'List' }).click();
+
+  // ── Close any auto-opened panel ────────────────────────────────────────────
+      async closeIfOpen() {
+const closeBtn = this.page.getByRole('button', { name: 'Close', exact: true });
+if (await closeBtn.isVisible().catch(() => false)) {
+  console.log('🔒 Closing open panel...');
+  await closeBtn.click();
+  await this.page.waitForTimeout(300);
+}
+}

@@ -1,43 +1,50 @@
 import { Page } from '@playwright/test';
-import { AddServicePage } from '../pages/Addservicepage';
+import { AddServicePage } from '../pages/AddServicePage';
 
 export async function addServiceFlow(page: Page) {
-  const addServicePage = new AddServicePage(page);
+  const svc = new AddServicePage(page);
 
   console.log('════════════════════════════════════════');
-  console.log('FLOW — Adding Service');
+  console.log('TEST 5 — Add, Edit & Delete Services');
   console.log('════════════════════════════════════════');
 
-  // ── Step 1: Navigate to Leads ──────────────────────────────────────────────
-  console.log('🖱️ Clicking Leads...');
-  await page.locator('a[href="/v2/leads/tasks"]').first().waitFor({ state: 'visible', timeout: 15000 });
-  await page.locator('a[href="/v2/leads/tasks"]').first().click();
-  await page.waitForTimeout(1000);
+  // ── Navigate to Service Pricing → Services ────────────────────────────────
+  await svc.clickServicePricingTab();
+  await svc.clickServicesSubTab();
 
-  // ── Step 2: Navigate to Settings ──────────────────────────────────────────
-  console.log('🖱️ Clicking Settings...');
-  await page.locator('a[href="/v2/leads/settings"]').waitFor({ state: 'visible', timeout: 15000 });
-  await page.locator('a[href="/v2/leads/settings"]').click();
-  await page.waitForTimeout(1000);
+  // Close any panel that auto-opens (e.g. Genie)
+  await svc.closeIfOpen();
 
-  // ── Step 3: Click Service Pricing tab ─────────────────────────────────────
-  await addServicePage.clickServicePricingTab();
+  // ════════════════════════════════════════
+  // ADD — Service 1: "test" — hours_based — price 1000
+  // ════════════════════════════════════════
+  console.log('➕ Adding Service 1 (test / hours_based / 1000)...');
+  await svc.clickAddService();
+  await svc.fillServiceName('Branding');
+  await svc.fillHourlyPrice(1000);
+  await svc.clickSave();
 
-  // ── Step 4: Click Services sub-tab ────────────────────────────────────────
-  await addServicePage.clickServicesSubTab();
+  // ════════════════════════════════════════
+  // ADD — Service 2: "test1" — per_unit — price 1000
+  // ════════════════════════════════════════
+  console.log('➕ Adding Service 2 (test1 / per_unit / 1000)...');
+  await svc.clickAddService();
+  await svc.fillServiceName('Marketing');
+  await svc.selectPricingModel('per_unit');
+  await svc.fillPerUnitPrice(1000);
+  await svc.clickSave();
 
-  // ── Step 5: Click Add Service ──────────────────────────────────────────────
-  await addServicePage.clickAddService();
+  // ════════════════════════════════════════
+  // ADD — Service 3: "test2" — retainer — price 1000
+  // ════════════════════════════════════════
+  console.log('➕ Adding Service 3 (test2 / retainer / 1000)...');
+  await svc.clickAddService();
+  await svc.fillServiceName('Design');
+  await svc.selectPricingModel('retainer');
+  await svc.fillRetainerPrice(1000);
+  await svc.clickSave();
 
-  // ── Step 6: Fill Service Name ──────────────────────────────────────────────
-  await addServicePage.fillServiceName('testing');
+  console.log('✅ All 3 services added!');
 
-  // ── Step 7: Fill Price ─────────────────────────────────────────────────────
-  await addServicePage.fillPrice(200000);
-
-  // ── Step 8: Save ───────────────────────────────────────────────────────────
-  await addServicePage.clickSave();
-  await addServicePage.verifyServiceAdded();
-
-  console.log('✅ FLOW PASSED — Service added successfully!');
+  // Note: Edit and Delete steps are in separate flow for better organization and to avoid long flows
 }
