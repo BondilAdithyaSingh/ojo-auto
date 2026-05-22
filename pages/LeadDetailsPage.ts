@@ -31,7 +31,7 @@ export class LeadDetailsPage {
   }
 
   // ── Close any auto-opened panel ────────────────────────────────────────────
-       async closeIfOpen() {
+         async closeIfOpen() {
 const closeBtn = this.page.getByRole('button', { name: 'Close', exact: true });
 if (await closeBtn.isVisible().catch(() => false)) {
   console.log('🔒 Closing open panel...');
@@ -39,7 +39,6 @@ if (await closeBtn.isVisible().catch(() => false)) {
   await this.page.waitForTimeout(300);
 }
 }
-
 
   // ── Click Details tab ──────────────────────────────────────────────────────
   async clickDetailsTab() {
@@ -424,6 +423,48 @@ if (await closeBtn.isVisible().catch(() => false)) {
     await this.page.getByRole('button', { name: 'Go back' }).click();
     await this.page.waitForTimeout(500);
     console.log('✅ Went back!');
+  }
+
+  // ── Click + button to confirm deliverable/KPI entry ──────────────────────
+  async clickPlusBtn(index: number) {
+    console.log(`🖱️ Clicking + button (nth ${index})...`);
+    await this.page.getByRole('button', { name: '+' }).nth(index)
+      .waitFor({ state: 'visible', timeout: 15000 });
+    await this.page.getByRole('button', { name: '+' }).nth(index).click();
+    await this.page.waitForTimeout(200);
+    console.log('✅ + button clicked!');
+  }
+
+  // ── Click empty icon button by index (used after adding service) ───────────
+  async clickEmptyIconBtn(index: number) {
+    console.log(`🖱️ Clicking empty icon button (nth ${index})...`);
+    await this.page.getByRole('button').filter({ hasText: /^$/ }).nth(index)
+      .waitFor({ state: 'visible', timeout: 15000 });
+    await this.page.getByRole('button').filter({ hasText: /^$/ }).nth(index).click();
+    await this.page.waitForTimeout(200);
+    console.log('✅ Icon button clicked!');
+  }
+
+  // ── Give BRO feedback ──────────────────────────────────────────────────────
+  async giveBroFeedback(index: number, feedback: string) {
+    console.log(`📝 Giving BRO feedback (nth ${index}): ${feedback}`);
+    const input = this.page.getByRole('textbox', { name: 'Add feedback...' }).nth(index);
+    await input.waitFor({ state: 'visible', timeout: 15000 });
+    await input.click();
+    await input.fill(feedback);
+    await this.page.getByRole('button', { name: 'Submit' }).click();
+    await this.page.waitForTimeout(500);
+    console.log('✅ BRO feedback submitted!');
+  }
+
+  // ── Fill SLA text content ──────────────────────────────────────────────────
+  async fillSlaContent(content: string) {
+    console.log('📝 Filling SLA content...');
+    const slaTextArea = this.page.getByText('Service Level Agreement (SLA)Date: {{current_date}}Provider: {{');
+    await slaTextArea.waitFor({ state: 'visible', timeout: 15000 });
+    await slaTextArea.fill(content);
+    await this.page.waitForTimeout(300);
+    console.log('✅ SLA content filled!');
   }
 
   // ── Assertion: invoice sent ────────────────────────────────────────────────

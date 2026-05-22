@@ -1,25 +1,38 @@
 import { test, Browser, BrowserContext, Page } from '@playwright/test';
+
 import { loginFlow } from '../flow/Loginflow';
+import { signupFlow } from '../flow/Signupflow';
+
 import { addLeadStageFlow } from '../flow/Addleadstageflow';
-import { addPackageFlow } from '../flow/Addpackageflow';
 import { addServiceFlow } from '../flow/Addserviceflow';
+import { addPackageFlow } from '../flow/Addpackageflow';
 import { addBROTemplateFlow } from '../flow/Addbrotemplateflow';
+
 import { editDeleteServiceFlow } from '../flow/EditDeleteServiceflow';
-import { createLeadManualFlow } from '../flow/CreateLeadManualFlow';
-import { createLeadFlow } from '../flow/Createleadflow';
+
+import { createLeadFlow } from '../flow/CreateLeadflow';
+// import { createLeadManualFlow } from '../flow/CreateLeadManualFlow';
 import { createLeadManualFlow2 } from '../flow/CreateLeadManualflow2';
-import { leadDetailsFlow,leadDetailsSlaFlow,leadInvoiceFlow, leadMessagesFlow } from '../flow/LeadDetailsflow';
-let page: Page;
-let context: BrowserContext;
+
+import { leadFullFlow } from '../flow/LeadDetailsflow';
+
 let browser: Browser;
+let context: BrowserContext;
+let page: Page;
 
 test.describe.serial('OJO App Tests', () => {
 
   test.setTimeout(600000);
 
+  // ---------------------------------------------------------------------------
+  // Setup
+  // ---------------------------------------------------------------------------
+
   test.beforeAll(async ({ browser: b }) => {
     browser = b;
-    context = await b.newContext();
+
+    context = await browser.newContext();
+
     page = await context.newPage();
 
     console.log('🌐 Shared browser opened — will stay open for all tests!');
@@ -27,64 +40,76 @@ test.describe.serial('OJO App Tests', () => {
 
   test.afterAll(async () => {
     await context.close();
+
     console.log('🔒 Shared browser closed!');
   });
+
+  // ---------------------------------------------------------------------------
+  // Authentication
+  // ---------------------------------------------------------------------------
 
   test('1 - Login', async () => {
     await loginFlow(page);
   });
 
+  // test('1 - Signup', async () => {
+  //   await signupFlow(page);
+  // });
+
+  // ---------------------------------------------------------------------------
+  // Lead Stage / Services / Packages
+  // ---------------------------------------------------------------------------
+
   test('2 - Add Lead Stage', async () => {
     await addLeadStageFlow(page);
   });
 
-  // test('3 - Add Service', async () => {
-    // await addServiceFlow(page);
+  test('3 - Add Service', async () => {
+    await addServiceFlow(page);
+  });
+
+  test('4 - Add Package', async () => {
+    await addPackageFlow(page);
+  });
+
+  // ---------------------------------------------------------------------------
+  // Service Management
+  // ---------------------------------------------------------------------------
+
+  // test('5 - Edit & Delete Services', async () => {
+  //   await editDeleteServiceFlow(page);
   // });
 
-  // test('4 - Add Package', async () => {
-    // await addPackageFlow(page);
+  // ---------------------------------------------------------------------------
+  // BRO Template
+  // ---------------------------------------------------------------------------
+
+  // test('6 - Add BRO Template', async () => {
+  //   await addBROTemplateFlow(page);
   // });
 
-  // 
-    // test('6 - Edit & Delete Services', async () => {
-    // await editDeleteServiceFlow(page);
+  // ---------------------------------------------------------------------------
+  // Lead Creation
+  // ---------------------------------------------------------------------------
+// 
+  // test('7 - Create Lead with OJO', async () => {
+    // await createLeadFlow(page);
   // });
 // 
-  // test('5 - Add BRO Template', async () => {
-    // await addBROTemplateFlow(page);
+  // test('8 - Create Lead Manually', async () => {
+  //   await createLeadManualFlow(page);
   // });
 
-// 
-  // test('5 - Create Lead with OJO', async () => {
-  // await createLeadFlow(page);
+  test('9 - Create Lead Manually (Existing Contact)', async () => {
+    await createLeadManualFlow2(page);
+  });
 
-// });
-// 
-    // test('6 - Create Lead Manually', async () => {
-    // 
-    // await createLeadManualFlow(page);
-  // });
-// 
-    test('7 - Create Lead Manually (Existing Contact) ', async () => {
+  // ---------------------------------------------------------------------------
+  // Complete Lead Flow
+  // ---------------------------------------------------------------------------
 
-      // 
-      await createLeadManualFlow2(page);
+  test('10 - Full Lead Flow', async () => {
+    await leadFullFlow(page);
+  });
 
-});
-
-    test('8 - Lead Details Flow: Add Services + Edit', async () => {
-      await leadDetailsFlow(page);
-    });
-
-    test('9  - Lead SLA', async () => {
-  await leadDetailsSlaFlow(page);
-});
-
- test('10 - Invoice', async () => {
-  await leadInvoiceFlow(page);
-});
-test('11 - Lead Messages', async () => {
-  await leadMessagesFlow(page);
-});
 });
