@@ -33,7 +33,7 @@ export async function addBROTemplateFlow(page: Page) {
   await broPage.fillTemplateName('testing123');
 
   // ── Step 7: Select Service Type ────────────────────────────────────────────
-  await broPage.selectServiceType('UI UX Design');
+  await broPage.selectServiceType('Branding');
 
   // ── Step 8: Fill Main Description ─────────────────────────────────────────
   await broPage.fillMainDescription('this is for testing');

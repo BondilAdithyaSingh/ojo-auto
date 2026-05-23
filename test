@@ -1,11 +1,60 @@
-await this.page.getByRole('button', { name: 'List' }).click();
 
-  // ── Close any auto-opened panel ────────────────────────────────────────────
-      async closeIfOpen() {
-const closeBtn = this.page.getByRole('button', { name: 'Close', exact: true });
-if (await closeBtn.isVisible().catch(() => false)) {
-  console.log('🔒 Closing open panel...');
-  await closeBtn.click();
-  await this.page.waitForTimeout(300);
-}
-}
+
+
+
+
+
+
+
+
+
+import { test, expect } from '@playwright/test';
+
+test('test', async ({ page }) => {
+  await page.goto('https://app.ojo.io/login');
+  await page.getByRole('textbox', { name: 'Work email' }).click();
+  await page.getByRole('textbox', { name: 'Work email' }).fill('bondil.adithyasingh@gmail.com');
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.getByRole('button', { name: 'Verify' }).click();
+  await page.locator('div').filter({ hasText: /^RoxonTechnology$/ }).nth(2).click();
+  await page.getByRole('link', { name: 'Projects' }).click();
+  await page.getByRole('button', { name: 'Close' }).click();
+  await page.getByRole('link', { name: 'All Projects' }).click();
+  await page.getByRole('button', { name: 'New Project' }).click();
+  await page.getByRole('menuitem', { name: 'Create Manually' }).click();
+  await page.getByRole('textbox', { name: 'Enter project name' }).click();
+  await page.getByRole('textbox', { name: 'Enter project name' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Enter project name' }).fill('O');
+  await page.getByRole('textbox', { name: 'Enter project name' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Enter project name' }).fill('Ojo ');
+  await page.getByRole('textbox', { name: 'Enter project name' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Enter project name' }).fill('Ojo P');
+  await page.getByRole('textbox', { name: 'Enter project name' }).press('CapsLock');
+  await page.getByRole('textbox', { name: 'Enter project name' }).fill('Ojo Project');
+  await page.getByRole('textbox', { name: 'Enter project description' }).click();
+  await page.getByRole('textbox', { name: 'Enter project description' }).fill('The Smart Expense Tracker is a web and mobile application designed to help users manage their daily expenses efficiently. Users can add income and expenses, categorize transactions, and track their spending habits through charts and reports. The system provides monthly budget analysis, spending alerts, and savings recommendations using simple data analytics. It also includes secure user authentication and cloud data storage for easy access across devices. The project is developed using modern technologies such as React, Node.js, Express, and MongoDB, focusing on user-friendly design and real-time financial tracking.');
+  await page.getByRole('textbox', { name: 'Enter project description' }).click({
+    modifiers: ['ControlOrMeta']
+  });
+  await page.getByRole('textbox', { name: 'Enter project name' }).click();
+  await page.getByRole('textbox', { name: 'Enter project name' }).fill('Smart Expense Tracker');
+  await page.locator('form').getByRole('button').filter({ hasText: /^$/ }).click();
+  await page.getByRole('combobox').nth(2).selectOption('9c191ee6-67f8-437a-841b-4f4e4f494583');
+  await page.getByRole('combobox').nth(3).selectOption('PROJECT_MANAGER');
+  await page.getByRole('button').nth(2).click();
+  await page.getByRole('combobox').nth(4).selectOption('12a14e01-7d6b-4951-b331-5cbc43214b4c');
+  await page.locator('div').filter({ hasText: /^Select start date$/ }).nth(1).click();
+  await page.getByRole('button', { name: 'Today' }).click();
+  await page.getByText('Select end date').click();
+  await page.locator('.flex.items-center.justify-between > button:nth-child(3)').click();
+  await page.getByRole('button', { name: '30' }).click();
+  await page.getByPlaceholder('0', { exact: true }).click();
+  await page.getByPlaceholder('0', { exact: true }).press('NumLock');
+  await page.getByPlaceholder('0', { exact: true }).fill('67');
+  await page.getByPlaceholder('Enter amount in rupees (e.g').click();
+  await page.getByPlaceholder('Enter amount in rupees (e.g').fill('6000000');
+  await page.getByRole('button', { name: 'Create Project' }).click();
+  await page.getByTitle('Smart Expense Tracker').click();
+  await page.getByRole('button', { name: 'Milestones & Tasks' }).click();
+  await page.getByRole('button', { name: 'Overview' }).click();
+});

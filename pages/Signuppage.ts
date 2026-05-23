@@ -6,7 +6,7 @@ export class SignupPage {
   // ── Navigate to signup ────────────────────────────────────────────────────
   async gotoSignup() {
     console.log('🌐 Opening OJO login page...');
-    await this.page.goto('https://app.ojo.io/login');
+    await this.page.goto('https://staging.ojo.io/login');
     await this.page.getByRole('link', { name: 'Sign Up here' }).click();
     console.log('✅ Signup page opened!');
   }

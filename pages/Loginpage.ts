@@ -6,7 +6,7 @@ export class LoginPage {
   // ── Go to login page ──────────────────────────────────────────────────────
   async goto() {
     console.log('🌐 Navigating to login page...');
-    await this.page.goto('https://app.ojo.io/login');
+    await this.page.goto('https://staging.ojo.io/login');
     await this.page.waitForTimeout(1000);
     console.log('✅ Login page loaded!');
   }
@@ -52,16 +52,16 @@ export class LoginPage {
     console.log('✅ Verify clicked!');
   }
 
-  // ── Select Workspace ──────────────────────────────────────────────────────
-  async selectWorkspace() {
-    console.log('🖱️ Selecting RoxonTechnology workspace...');
-    const workspace = this.page
-      .locator('div')
-      .filter({ hasText: /^RoxonTechnology$/ })
-      .nth(1);
-    await workspace.waitFor({ state: 'visible', timeout: 15000 });
-    await workspace.click();
-    await this.page.waitForTimeout(1000);
+  // ── Select Workspace ─────────────────────────────────────────────────────
+   async selectWorkspace(workspaceName: string) {
+    console.log(`🖱️ Selecting workspace: ${workspaceName}...`);
+
+    const workspaceCard = this.page.locator('div').filter({
+      has: this.page.getByText(workspaceName, { exact: true })
+    });
+
+    await workspaceCard.first().click();
+
     console.log('✅ Workspace selected!');
   }
 }

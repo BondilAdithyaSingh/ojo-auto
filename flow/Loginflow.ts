@@ -24,7 +24,7 @@ export async function loginFlow(page: Page) {
   await loginPage.clickVerify();
 
   // ── Step 6: Select Workspace ───────────────────────────────────────────────
-  await loginPage.selectWorkspace();
+  await loginPage.selectWorkspace('Samsung');
 
   console.log('✅ FLOW PASSED — Logged in successfully!');
 }

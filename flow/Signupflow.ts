@@ -14,7 +14,7 @@ export async function signupFlow(page: Page) {
   // ── Step 2: Fill personal details ────────────────────────────────────────
   await signupPage.fillPersonalDetails(
     'Adithya',
-    'bondil.adithyasingh+dojo2@gmail.com'
+    'bondil.adithyasingh@gmail.com'
   );
 
   // ── Step 3: Continue ──────────────────────────────────────────────────────
